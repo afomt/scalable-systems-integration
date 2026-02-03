@@ -1,13 +1,12 @@
-version: '3.8'
 services:
-  # Mock REST APIs for CRM and Inventory [cite: 8, 9]
+  # Mock REST APIs for CRM and Inventory
   rest-mocks:
     image: stoplight/prism:4
     command: mock -h 0.0.0.0 /public/api.yaml
     volumes:
       - ./crm-inventory-spec.yaml:/public/api.yaml
     ports:
-      - "4010:4010"
+      - "3001:4010"
 
   # Mock SOAP API for CRM 
   soap-mock:
@@ -15,9 +14,30 @@ services:
     ports:
       - "8000:8000"
 
-  # Message Broker [cite: 13]
-  rabbitmq:
-    image: rabbitmq:3-management
+  # Zookeeper: Required by Kafka to manage cluster state
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  # Kafka Broker
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8081:8081"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
