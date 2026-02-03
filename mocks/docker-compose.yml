@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  # Mock REST APIs for CRM and Inventory [cite: 8, 9]
+  rest-mocks:
+    image: stoplight/prism:4
+    command: mock -h 0.0.0.0 /public/api.yaml
+    volumes:
+      - ./crm-inventory-spec.yaml:/public/api.yaml
+    ports:
+      - "4010:4010"
+
+  # Mock SOAP API for CRM 
+  soap-mock:
+    build: .
+    ports:
+      - "8000:8000"
+
+  # Message Broker [cite: 13]
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
