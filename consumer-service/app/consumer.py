@@ -10,18 +10,20 @@ async def consume_forever():
             TOPIC,
             bootstrap_servers=BOOTSTRAP,
             group_id="analytics-consumer",
-            auto_offset_reset="earliest",
+            auto_offset_reset="earliest"
         )
-        print("will try connecting..")
+
+        print("will try connecting..", flush=True)
+
         try:
             await consumer.start()
-            print("Kafka consumer connected")
+            print("Kafka consumer connected", flush=True)
 
             async for msg in consumer:
-                print(msg.value)
+                print(msg.value, flush=True)
 
         except Exception as e:
-            print(f"Kafka error: {e}. Retrying in 5s...")
+            print(f"Kafka error: {e}. Retrying in 5s...", flush=True)
             await asyncio.sleep(5)
 
         finally:
