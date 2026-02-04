@@ -39,3 +39,8 @@ paths:
                 - sku: "PROD-001"
                   stock_level: 50
                   price: 29.99
+  /analytics/data:
+    post:
+      responses:
+        '200':
+          description: Accepted
