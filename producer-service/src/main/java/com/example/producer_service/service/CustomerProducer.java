@@ -30,7 +30,7 @@ public class CustomerProducer {
 
     @Scheduled(fixedRate = 300000, initialDelay = 5000)
     public void publishCustomers() {
-        log.info("⏳ Scheduled job started: fetching customers from CRM REST mock...");
+        log.info("Scheduled job started: fetching customers from CRM REST mock...");
 
         Customer[] customers = crmClient.fetchCustomers();
 
@@ -41,7 +41,7 @@ public class CustomerProducer {
 
         for (Customer c : customers) {
             if (c == null || c.getId() == null || c.getId().isBlank()) {
-                log.warn("⚠️ Skipping invalid customer record");
+                log.warn("Skipping invalid customer record");
                 continue;
             }
 
@@ -49,6 +49,6 @@ public class CustomerProducer {
             kafkaTemplate.send("customer_data", c.getId(), c);
         }
 
-        log.info("✅ Published {} customers", customers.length);
+        log.info("Published {} customers", customers.length);
     }
 }

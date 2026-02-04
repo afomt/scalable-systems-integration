@@ -2,7 +2,7 @@ import os, asyncio
 from aiokafka import AIOKafkaConsumer
 
 BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP", "kafka:9092")
-TOPIC = os.getenv("KAFKA_TOPIC", "crm-events")
+TOPIC = os.getenv("KAFKA_TOPIC", "customer_data")
 
 async def consume_forever():
     while True:
@@ -17,7 +17,7 @@ async def consume_forever():
 
         try:
             await consumer.start()
-            print("Kafka consumer connected", flush=True)
+            print("Kafka consumer connected  ", flush=True)
 
             async for msg in consumer:
                 print(msg.value, flush=True)
