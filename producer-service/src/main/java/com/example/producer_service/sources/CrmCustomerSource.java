@@ -2,7 +2,6 @@ package com.example.producer_service.sources;
 
 import com.example.producer_service.client.CrmClient;
 import com.example.producer_service.model.Customer;
-import com.example.producer_service.sources.ProducerSource;
 
 import java.util.Arrays;
 import java.util.List;

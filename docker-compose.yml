@@ -27,7 +27,7 @@ services:
     build: ./mocks/crm/soap
     container_name: crm-soap-mock
     ports:
-      - "8000:8000"
+      - "8011:8000"
 
   # -----------------------------
   # ANALYTICS MOCK
@@ -74,6 +74,15 @@ services:
 
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 
+
+# REDIS 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+
   # -----------------------------
   # KAFKA UI
   # -----------------------------
@@ -115,8 +124,11 @@ services:
     depends_on:
       kafka:
         condition: service_started
+      redis:
+        condition: service_started
       analytics-mock:
         condition: service_started
     environment:
       KAFKA_BOOTSTRAP: kafka:9092
+      REDIS_URL: redis://redis:6379
       ANALYTICS_URL: http://analytics-mock:9000/analytics/data

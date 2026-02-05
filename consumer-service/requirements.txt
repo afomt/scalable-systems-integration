@@ -1,3 +1,6 @@
 aiokafka
 aiohttp
 tenacity
+redis
+pytest
+pytest-asyncio
