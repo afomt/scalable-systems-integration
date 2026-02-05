@@ -2,6 +2,7 @@ openapi: 3.0.0
 info:
   title: E-commerce Integration Mock API
   version: 1.0.0
+
 paths:
   /customers:
     get:
@@ -11,22 +12,15 @@ paths:
           description: A list of customers
           content:
             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
               example:
                 - id: "C001"
                   name: "Alice Smith"
                   email: "alice@example.com"
-    post:
-      summary: Create a new customer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            example:
-              name: "Bob Jones"
-              email: "bob@example.com"
-      responses:
-        '201':
-          description: Customer created
+
   /products:
     get:
       summary: Fetch product stock
@@ -35,12 +29,63 @@ paths:
           description: Inventory list
           content:
             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
               example:
-                - sku: "PROD-001"
-                  stock_level: 50
-                  price: 29.99
+                - id: "PROD-001"
+                  name: "Wireless Mouse"
+                  stock: 50
+
   /analytics/data:
     post:
+      summary: Receive merged analytics data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsPayload'
       responses:
         '200':
           description: Accepted
+
+components:
+  schemas:
+    Customer:
+      type: object
+      required: [id, name, email]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+
+    Product:
+      type: object
+      required: [id, name, stock]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        stock:
+          type: integer
+
+    AnalyticsPayload:
+      type: object
+      properties:
+        customerId:
+          type: string
+        customerName:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        timestamp:
+          type: string
+          format: date-time
