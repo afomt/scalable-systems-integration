@@ -63,12 +63,9 @@ pipelines use Python.
 
 1.  Kafka buffering prevents producer overload
 2.  Async Python workers process in parallel
-3.  Cached API responses reduce upstream load
-4.  Stateless consumer instances allow horizontal scaling
+3.  Stateless consumer instances allow horizontal scaling
 
-System can scale by:
 
-    docker compose up --scale consumer-service=5
 
 ------------------------------------------------------------------------
 
@@ -79,9 +76,6 @@ System can scale by:
   Redis Idempotency    Prevent duplicate analytics
   Retry loops          Handle service outages
   Kafka durability     No data loss
-  Caching              Reduce external API pressure
-  Health checks        Detect failures
-  Prometheus metrics   Monitor throughput
 
 ------------------------------------------------------------------------
 
@@ -130,12 +124,7 @@ Analytics:
 
 ## Monitoring
 
-Prometheus: http://localhost:9090
 
-Grafana: http://localhost:3000
-
-Metrics include: - events/sec - duplicates skipped - analytics delivery
-rate
 
 ------------------------------------------------------------------------
 
@@ -148,5 +137,4 @@ rate
 
 ## Technologies
 
-Spring Boot, Kafka, Python AsyncIO, Redis, SOAP, REST, Docker Compose,
-Prometheus, Grafana
+Spring Boot, Kafka, Python AsyncIO, Redis, SOAP, REST, Docker Compose
